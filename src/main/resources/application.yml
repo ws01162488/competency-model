@@ -1,0 +1,14 @@
+server:
+    port: 7777
+spring:
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+  datasource:
+    url: jdbc:mysql://localhost:3306/competency-model
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    
+    
