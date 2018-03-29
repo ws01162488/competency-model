@@ -1,66 +1,22 @@
-﻿<!DOCTYPE html>
-<html>
-<head lang="en">
-	<meta charset="UTF-8">
-	<title></title>
-	<style>
-	*{
-		margin: 0;
-		padding: 0;
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="cn">
+<meta charset="UTF-8" />
+<title></title>
+<script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		
+	});
+	function clickDomian() {
+		
 	}
-	.message{
-		width: 60%;
-		margin: 0 10px;
-		display: inline-block;
-		text-align: center;
-		height: 40px;
-		line-height: 40px;
-		font-size: 20px;
-		border-radius: 5px;
-		border: 1px solid #B3D33F;
-	}
-	.form{
-		width:100%;
-		position: fixed;
-		bottom: 300px;
-		left: 0;
-	}
-	.connect{
-		height: 40px;
-		vertical-align: top;
-		/* padding: 0; */
-		width: 80px;
-		font-size: 20px;
-		border-radius: 5px;
-		border: none;
-		background: #B3D33F;
-		color: #fff;
-	}
-</style>
+</script>
 </head>
 <body>
-	
-		<textarea cols="50" rows="30" id="message"></textarea>
-		<input type="text" id="sendMessage" />
-		<button type="button" id="sendBtn">send</button>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/sockjs.min.js"></script>
-	<script src="js/stomp.min.js"></script>
-	<script type="text/javascript">
-		var socket = new SockJS('/tasks');
-		stompClient = Stomp.over(socket);
-		stompClient.connect({}, function(frame) {
-			stompClient.subscribe('/topic/bordcast', function(event) {
-				var taskEvent = JSON.parse(event.body);
-				console.log(taskEvent);
-				$('#message').val($('#message').val() + "\n" + taskEvent.text); 
-				//toaster.pop('success', taskEvent.type, taskEvent.data);
-				//$scope.$apply();
-			});
-		});
-		$('#sendBtn').click(function(){
-			stompClient.send('/app/foo',{},{text:$('#sendMessage').val()});
-		});
-	</script>
+	<div>
+		hello
+	</div>
+	<div></div>
 </body>
 </html>

@@ -1,14 +1,18 @@
 server:
-    port: 7777
+    port: 8888
 spring:
   mvc:
     view:
       prefix: /
       suffix: .html
   datasource:
-    url: jdbc:mysql://localhost:3306/competency-model
-    username: root
-    password: 123456
-    driver-class-name: com.mysql.jdbc.Driver
-    
-    
+    #url: jdbc:mysql://localhost:3306/competency-model
+    #username: root
+    #password: 123456
+    #driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:hsqldb:mem:competency;hsqldb.tx=MVCC
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    #schema: classpath:db/schema.sql
+    data: classpath:db/data.sql
+  #jpa:
+    #show-sql: true
