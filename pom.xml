@@ -60,147 +60,23 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
 			<version>3.3.1</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-
-
 	</dependencies>
+
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/${project.deploy}/lib</outputDirectory>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>false</overWriteSnapshots>
-							<overWriteIfNewer>true</overWriteIfNewer>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<configuration>
-					<nonFilteredFileExtensions>
-						<nonFilteredFileExtension>data</nonFilteredFileExtension>
-					</nonFilteredFileExtensions>
-				</configuration>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<encoding>UTF-8</encoding>
-							<outputDirectory>${project.build.directory}/${project.deploy}/conf</outputDirectory>
-							<resources>
-								<resource>
-									<directory>src/main/resources/</directory>
-									<includes>
-										<include>*.yml</include>
-										<include>log4j2.xml</include>
-										<include>*.conf</include>
-										<include>*.data</include>
-										<include>banner.txt</include>
-										<include>*.properties</include>
-									</includes>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-ump_files</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<encoding>UTF-8</encoding>
-							<outputDirectory>${project.build.directory}/${project.deploy}/ump_files</outputDirectory>
-							<resources>
-								<resource>
-									<directory>src/main/ump_files/</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-sh</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<encoding>UTF-8</encoding>
-							<outputDirectory>${project.build.directory}/${project.deploy}/</outputDirectory>
-							<resources>
-								<resource>
-									<directory>src/main/resources/</directory>
-									<includes>
-										<include>*.sh</include>
-									</includes>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>jarexclude</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/${project.deploy}/lib</outputDirectory>
-							<excludes>
-								<exclude>*.yml</exclude>
-								<exclude>log4j2.xml</exclude>
-								<exclude>*.conf</exclude>
-								<exclude>*.sh</exclude>
-							</excludes>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

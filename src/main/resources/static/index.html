@@ -1,22 +1,32 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head lang="cn">
-<meta charset="UTF-8" />
-<title></title>
-<script src="webjars/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript">
-	$(function() {
-		
-	});
-	function clickDomian() {
-		
-	}
-</script>
+<html ng-app="competency-app">
+<head>
+<title>胜任力模型</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<link href="bootstrap/css/bootstrap.min.css" type="text/css"
+	rel="stylesheet">
+<link href="css/toaster.css" type="text/css" rel="stylesheet">
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="js/angular-animate.min.js"></script>
+<script src="js/toaster.js"></script>
+<script src="js/app.js"></script>
+<style type="text/css">
+.domain {
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+</style>
 </head>
-<body>
-	<div>
-		hello
+<body ng-controller="indexCtrl">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<button ng-repeat="domain in domains" class="btn btn-default domain"
+				type="button" role="button" ng-click="checkDomain(domain);">{{domain.name}}</button>
+		</div>
+		<ul class="list-group">
+			<li ng-repeat="competency in competencys" class="list-group-item">{{competency.name}}</li>
+		</ul>
 	</div>
-	<div></div>
 </body>
 </html>

@@ -10,9 +10,10 @@ spring:
     #username: root
     #password: 123456
     #driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:hsqldb:mem:competency;hsqldb.tx=MVCC
+    #url: jdbc:hsqldb:mem:competency;hsqldb.tx=MVCC
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
     #schema: classpath:db/schema.sql
     data: classpath:db/data.sql
+    
   #jpa:
     #show-sql: true
