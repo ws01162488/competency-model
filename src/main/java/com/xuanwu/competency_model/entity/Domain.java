@@ -26,9 +26,6 @@ public class Domain {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "domain_competency", joinColumns = { @JoinColumn(name = "domain_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "competency_id") })
-//	@ManyToMany(targetEntity = Competency.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-//	@JoinTable(name = "domain_competency", joinColumns = @JoinColumn(name = "domain_id", referencedColumnName = "id"), 
-//	inverseJoinColumns = @JoinColumn(name = "competency_id", referencedColumnName = "id"))
 	private List<Competency> competencys;
 
 }
