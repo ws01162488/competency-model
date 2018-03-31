@@ -1,18 +1,30 @@
-angular.module('competency-app', [ 'toaster' ]);
+var app = angular.module('competencyApp', [ 'toaster', 'ngRoute', 'competencyCtrls' ]);
 
-function indexCtrl($scope, $http, $timeout, toaster) {
-	$scope.domains = [];
-	$scope.competencys = [];
-	$scope.checkedCompetencys = new Map();
-	$scope.loadDomains = function() {
-		$http.get('getDomains').then(function(response) {
-			angular.copy(response.data, $scope.domains);
-		});
+app.factory('myFactory', function() {
+	var map = new Map();
+
+	var _setter = function(data) {
+		map = data;
 	};
-	$scope.loadDomains();
-	
-	$scope.checkDomain = function(domain){
-		domain.check = !domain.check;
-		$scope.competencys = domain.check ? domain.competencys: [];
+
+	var _getter = function() {
+		return map;
 	};
-};
+
+	return {
+		set : _setter,
+		get : _getter
+	}
+});
+
+app.config(function ($routeProvider) {
+    $routeProvider.when('/domain', {
+        templateUrl: '/view/domain.html',
+        controller: 'domainCtrl'
+    }).when('/class', {
+        templateUrl: '/view/class.html',
+        controller: 'classCtrl'
+    }).otherwise({
+        redirectTo: '/domain'
+    })
+});
