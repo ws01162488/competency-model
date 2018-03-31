@@ -12,24 +12,4 @@ public class MainControllor {
 		return path;
 	}
 
-	// @RequestMapping("/index")
-	// public String index() {
-	// return "indexPage";
-	// }
-	//
-	// @RequestMapping("/class")
-	// public String classes() {
-	// return "classPage";
-	// }
-	//
-	// @RequestMapping("/domain")
-	// public String domain() {
-	// return "domainPage";
-	// }
-
-	// @RequestMapping("/login")
-	// public String login() {
-	// return "login";
-	// }
-
 }

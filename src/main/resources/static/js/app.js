@@ -1,29 +1,43 @@
 var app = angular.module('competencyApp', [ 'toaster', 'ngRoute', 'competencyCtrls' ]);
 
 app.factory('myFactory', function() {
-	var map = new Map();
+	var domains;
+	var competencys;
 
-	var _setter = function(data) {
-		map = data;
+	var setDomains = function(data) {
+		domains = data;
 	};
 
-	var _getter = function() {
-		return map;
+	var getDomains = function() {
+		return domains;
+	};
+	
+	var setCompetencys = function(data) {
+		competencys = data;
+	};
+
+	var getCompetencys = function() {
+		return competencys;
 	};
 
 	return {
-		set : _setter,
-		get : _getter
+		setDomains : setDomains,
+		getDomains : getDomains,
+		setCompetencys : setCompetencys,
+		getCompetencys : getCompetencys
 	}
 });
 
 app.config(function ($routeProvider) {
     $routeProvider.when('/domain', {
-        templateUrl: '/view/domain.html',
+        templateUrl: '/view/domain',
         controller: 'domainCtrl'
     }).when('/class', {
-        templateUrl: '/view/class.html',
+        templateUrl: '/view/class',
         controller: 'classCtrl'
+    }).when('/export', {
+        templateUrl: '/view/export',
+        controller: 'exportCtrl'
     }).otherwise({
         redirectTo: '/domain'
     })

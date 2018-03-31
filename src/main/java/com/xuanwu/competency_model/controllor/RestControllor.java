@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xuanwu.competency_model.entity.CompetencyClass;
 import com.xuanwu.competency_model.entity.Domain;
 import com.xuanwu.competency_model.service.Service;
 
@@ -16,7 +17,12 @@ public class RestControllor {
 	private Service service;
 	
 	@RequestMapping("getDomains")
-	public List<Domain> getDomails(){
+	public List<Domain> getDomains(){
 		return service.findAllDomain();
+	}
+	
+	@RequestMapping("getCompetenctClasses")
+	public List<CompetencyClass> getCompetenctClasses(){
+		return service.findAllCompetencyClasses();
 	}
 }

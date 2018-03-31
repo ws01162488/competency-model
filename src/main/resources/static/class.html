@@ -1,1 +1,32 @@
+<div class="row">
+	<div class="col-md-2" ng-repeat="(k,v) in classes">
+		<div class="panel panel-info">
+			<div class="panel-heading">{{v.name}}</div>
+			<div class="panel-body">
+				<div ng-repeat="competency in v.competencys | filter:{checked:false}">
+					<span class="glyphicon"
+						ng-class="{true :'glyphicon-minus', false :'glyphicon-plus'}[competency.checked]"
+						ng-click="check(competency);">
+						{{competency.name}}
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="panel panel-primary">
+			<div class="panel-heading">已选胜任力</div>
+			<div class="panel-body">
+				<div ng-repeat="(k,competency) in checkedCompetencys">
+					<span class="glyphicon"
+							ng-class="{true :'glyphicon-minus', false :'glyphicon-plus'}[competency.checked]"
+							ng-click="check(competency);">
+						{{competency.name}}
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <button type="button" class="btn btn-primary" ng-click="prev();">上一步</button>
+<button type="button" class="btn btn-primary" ng-click="next();">下一步</button>

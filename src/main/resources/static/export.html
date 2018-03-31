@@ -1,0 +1,21 @@
+<div class="panel panel-default">
+	<div class="panel-heading">Panel heading</div>
+
+	<table class="table">
+		<tr>
+		<th>胜任力</th>
+		<th>定义</th>
+		<th>行为描述</th>
+		<th>操作</th>
+		</tr>
+		<tr ng-repeat="(id,competency) in competencys">
+			<td>{{competency.name}}</td>
+			<td>{{competency.definition}}</td>
+			<td>{{competency.description}}</td>
+			<td>修改 删除</td>
+		</tr>
+	</table>
+</div>
+<button type="button" class="btn btn-primary" ng-click="prev();">上一步</button>
+<button type="button" class="btn btn-primary" ng-click="next();">导出</button>
+
