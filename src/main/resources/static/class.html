@@ -39,7 +39,7 @@
 		<div class="step_list">
 			<ul>
 				<li ng-repeat="(k,competency) in checkedCompetencys" ng-click="check(competency);">
-					{{competency.name}}<i><img src="css/images/icon_remove.png"></i>
+					{{competency.name}}{{competency.checked}}<i><img src="css/images/icon_remove.png"></i>
 				</li>
 			</ul>
 		</div>

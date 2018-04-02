@@ -43,7 +43,6 @@ competencyCtrls.controller('classCtrl', function($scope, $http, $location, myFac
 	}
 	$scope.next = function() {
 		var count = Object.getOwnPropertyNames($scope.checkedCompetencys).length;
-		console.log(count);
 		if(count <= 0){
 			toastr.warning('请选择胜任力！');
 			return;
@@ -92,6 +91,7 @@ competencyCtrls.controller('classCtrl', function($scope, $http, $location, myFac
 // 第三步 导出
 competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFactory) {
 	$scope.prev = function() {
+		myFactory.setCompetencys($scope.competencys);
 		$location.url("/class");
 	}
 	$scope.position = myFactory.getPosition();
@@ -124,13 +124,10 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
 	}
 	
 	$scope.delete = function(id){
+		$scope.competencys[id].checked = false;
 		delete $scope.competencys[id];
 	};
 	
-	$scope.modify = function(){
-		
-	};
-
 	$scope.export = function() {
 		var exportData = [];
 		angular.forEach($scope.competencys, function(competency) {
