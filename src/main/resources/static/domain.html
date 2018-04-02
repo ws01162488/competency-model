@@ -1,11 +1,36 @@
-<div class="panel panel-default">
-	<div class="panel-body">
-		<button ng-repeat="domain in domains" class="btn btn-default domain"
-			type="button" ng-click="checkDomain(domain);">{{domain.name}}</button>
+<div class="banner">
+	<div class="step">
+		<i><img src="css/images/icon_yd_on.png"></i>
+		<p class="step_line"></p>
+		<b><img src="css/images/icon_yd.png"></b>
+		<p class="step_line"></p>
+		<b><img src="css/images/icon_yd.png"></b>
 	</div>
-	<ul class="list-group">
-		<li ng-repeat="competency in competencys" class="list-group-item">{{competency.name}}</li>
-	</ul>
+	<div class="step_font">
+			<ul>
+				<li class="step_color">识别职位关键贡献领域</li>
+				<li>胜任力分析</li>
+				<li>胜任力模型包装</li>
+			</ul>
+		</div>
 </div>
-<button type="button" class="btn btn-primary" ng-click="next();">下一步</button>
-
+<div class="main">
+	<div class="input">职位：<input type="text" ng-model="position"></input></div>
+	<div class="modular">
+		<div class="title">职位关键贡献领域</div>
+		<div class="navbar">
+			<ul>
+			   	<li ng-repeat="domain in domains"><a href="javascript:" ng-click="checkDomain(domain);" ng-class="{true :'navbar_checked', false :''}[domain.checked]">{{domain.name}}</a></li>
+			 </ul>
+		</div>
+	</div> 
+	<div class="modular_right">
+		<div class="title border_color">职位所需胜任力</div>
+		<div class="list_right">
+			<ul>
+				<li ng-repeat="competency in competencys"><a href="#">{{competency.name}}</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="button"><input type="button" value="下一步" ng-click="next();"></input></div>
+</div>

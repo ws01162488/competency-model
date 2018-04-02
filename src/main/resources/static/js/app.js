@@ -1,8 +1,9 @@
-var app = angular.module('competencyApp', [ 'toaster', 'ngRoute', 'competencyCtrls' ]);
-
+var app = angular.module('competencyApp', ['ngRoute', 'competencyCtrls']);
+// 存放页面间跳转需要传递的数据
 app.factory('myFactory', function() {
 	var domains;
 	var competencys;
+	var position;
 
 	var setDomains = function(data) {
 		domains = data;
@@ -19,12 +20,22 @@ app.factory('myFactory', function() {
 	var getCompetencys = function() {
 		return competencys;
 	};
+	
+	var setPosition = function(data) {
+		position = data;
+	};
+
+	var getPosition = function() {
+		return position;
+	};
 
 	return {
 		setDomains : setDomains,
 		getDomains : getDomains,
 		setCompetencys : setCompetencys,
-		getCompetencys : getCompetencys
+		getCompetencys : getCompetencys,
+		setPosition : setPosition,
+		getPosition : getPosition
 	}
 });
 

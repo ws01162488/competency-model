@@ -1,21 +1,42 @@
-<div class="panel panel-default">
-	<div class="panel-heading">Panel heading</div>
-
-	<table class="table">
+<div class="banner">
+	<div class="step">
+		<i><img src="css/images/icon_yd_on.png"></i>
+		<p class="step_line step_two"></p>
+		<i><img src="css/images/icon_yd_on.png"></i>
+		<p class="step_line step_two"></p>
+		<b><img src="css/images/icon_yd_on.png"></b>
+	</div>
+	<div class="step_font">
+		<ul>
+			<li class="step_color">识别职位关键贡献领域</li>
+			<li class="step_color">胜任力分析</li>
+			<li class="step_color">胜任力模型包装</li>
+		</ul>
+	</div>
+</div>
+<div class="main">
+	<div class="input">
+		<b>营销总监</b>
+	</div>
+	<table class="step_three" cellspacing="0" cellpadding="0">
 		<tr>
-		<th>胜任力</th>
-		<th>定义</th>
-		<th>行为描述</th>
-		<th>操作</th>
+			<th class="td_150">胜任力</th>
+			<th class="td_150">定义</th>
+			<th class="td_150">行为描述</th>
+			<th class="td_150">操作</th>
 		</tr>
 		<tr ng-repeat="(id,competency) in competencys">
-			<td>{{competency.name}}</td>
+			<td class="td_150">{{competency.name}}</td>
 			<td>{{competency.definition}}</td>
 			<td>{{competency.description}}</td>
-			<td>修改 删除</td>
+			<td>
+				<a href="javascript:" ng-click="modify();">修改</a>
+				<a href="javascript:" ng-click="delete(id);">删除</a>
+			</td>
 		</tr>
 	</table>
+	<div class="button">
+		<input class="back" type="button" value="上一步" ng-click="prev();" /> <input
+			type="button" value="导&nbsp;出" ng-click="export();" />
+	</div>
 </div>
-<button type="button" class="btn btn-primary" ng-click="prev();">上一步</button>
-<button type="button" class="btn btn-primary" ng-click="next();">导出</button>
-
