@@ -28,7 +28,7 @@
 		</div>
 		<div class="tab_list">
 			<ul ng-repeat="(k,v) in classes" >
-				<li ng-repeat="competency in v.competencys" ng-click="check(competency);" ng-if="!competency.checked && competency.firstChecked">
+				<li ng-repeat="competency in v.competencys" ng-click="check(competency);" title="{{competency.definition}}" ng-if="!competency.checked && competency.firstChecked">
 					<img src="css/images/icon_add.png">{{competency.name}}
 				</li>
 			</ul>
@@ -39,7 +39,7 @@
 		<div class="prompt"><img src="css/images/icon_attention.png"><br>可以继续从胜任力分类选择，最多选出9项胜任力</div>
 		<div class="step_list">
 			<ul>
-				<li ng-repeat="(k,competency) in checkedCompetencys" ng-click="check(competency);" ng-if="competency.checked && competency.firstChecked">
+				<li ng-repeat="(k,competency) in checkedCompetencys" ng-click="check(competency);" title="{{competency.definition}}" ng-if="competency.checked && competency.firstChecked">
 					{{competency.name}}<i><img src="css/images/icon_remove.png"></i>
 				</li>
 			</ul>
