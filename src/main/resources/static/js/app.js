@@ -7,6 +7,7 @@ app.factory('myFactory', function() {
 	var domains;
 	var competencys;
 	var position;
+	var classes;
 
 	var setDomains = function(data) {
 		domains = data;
@@ -31,12 +32,22 @@ app.factory('myFactory', function() {
 	var getPosition = function() {
 		return position;
 	};
+	
+	var setClasses = function(data) {
+		classes = data;
+	};
+
+	var getClasses = function() {
+		return classes;
+	};
 
 	return {
 		setDomains : setDomains,
 		getDomains : getDomains,
 		setCompetencys : setCompetencys,
 		getCompetencys : getCompetencys,
+		setClasses : setClasses,
+		getClasses : getClasses,
 		setPosition : setPosition,
 		getPosition : getPosition
 	}

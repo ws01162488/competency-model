@@ -25,7 +25,7 @@
 			<th class="td_150">行为描述</th>
 			<th class="td_150">操作</th>
 		</tr>
-		<tr ng-repeat="(id,competency) in competencys">
+		<tr ng-repeat="(id,competency) in competencys" ng-if="competency.checked && competency.firstChecked">
 			<td class="td_150">{{competency.name}}</td>
 			<td>
 				<span editable-textarea="competency.definition" e-name="definition" e-rows="7" e-cols="40" e-form="rowform">{{competency.definition}}</span>
@@ -33,10 +33,9 @@
 			<td>
 				<span editable-textarea="competency.description" e-name="description" e-rows="7" e-cols="30" e-form="rowform">{{competency.description}}</span>
 			</td>
-			
 			<td>
 				<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline">
-		        	<button type="button" ng-disabled="rowform.$waiting" class="btn btn-primary">
+		        	<button type="button" ng-disabled="rowform.$waiting"  ng-click="rowform.$save()" class="btn btn-primary">
 		            	保存
 		          	</button>
 		          	<button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
@@ -44,7 +43,7 @@
 		          	</button>
 		        </form>
 		        <button type="button" ng-show="!rowform.$visible" ng-click="rowform.$show()" class="btn btn-primary">修改</button>
-		        <button type="button" ng-show="!rowform.$visible" ng-click="delete(id);" class="btn btn-danger">删除</button>
+		        <button type="button" ng-show="!rowform.$visible" ng-click="delete(id);" class="btn btn-danger mar_l10">删除</button>
 			</td>
 		</tr>
 	</table>

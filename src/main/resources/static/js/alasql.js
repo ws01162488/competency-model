@@ -16999,7 +16999,6 @@ alasql.into.XLSXML = function(filename, opts, data, columns, cb) {
 		}
 
 		s3 += '</Workbook>';
-		debugger;
 		return s1 + s2 + s3;
 	}
 };

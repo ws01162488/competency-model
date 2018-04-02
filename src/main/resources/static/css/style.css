@@ -39,14 +39,14 @@ table,div,ul,li,ol,b,input,p{border:0;list-style: none;padding: 0;margin:0;}
 .step_left{display:inline-block;width: 910px;margin-top: 20px;}
 .nav_tab{width:100%;display:inline-block;margin-top:10px;}
 .nav_tab b{display:inline-block;}
-.tab_a{display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;background: #597cff;padding:30px 20px;color:#fff;font-size: 16px;}
-.tab_a img,.tab_b img,.tab_c img,.tab_d img,.tab_e img,.tab_list img{vertical-align: middle;margin-right:10px;}
-.tab_b{background: #38ccb2;display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;padding:30px 20px;color:#fff;font-size: 16px;}
-.tab_c{background: #ff7132;display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;padding:30px 20px;color:#fff;font-size: 16px;}
-.tab_d{background: #8972eb;display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;padding:30px 20px;color:#fff;font-size: 16px;}
-.tab_e{background: #f69c0a;display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;padding:30px 20px;color:#fff;font-size: 16px;}
+.tab_class_1{display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;background: #597cff;padding:30px 20px;color:#fff;font-size: 16px;}
+.tab_class_1 img,.tab_class_2 img,.tab_class_3 img,.tab_class_4 img,.tab_class_5 img,.tab_list img{vertical-align: middle;margin-right:10px;}
+.tab_class_2{background: #38ccb2;display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;padding:30px 20px;color:#fff;font-size: 16px;}
+.tab_class_3{background: #ff7132;display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;padding:30px 20px;color:#fff;font-size: 16px;}
+.tab_class_4{background: #8972eb;display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;padding:30px 20px;color:#fff;font-size: 16px;}
+.tab_class_5{background: #f69c0a;display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;padding:30px 20px;color:#fff;font-size: 16px;}
 
-.tab_list{display:inline-block;margin-top: 20px;width:100%;}
+.tab_list{display:inline-flex;margin-top: 20px;width:100%;}
 .tab_list ul{width:185px;display:inline-block;}
 .tab_list li{width: 178px;display:inline-block;font-size: 14px;line-height: 30px;color:#7b86a6;margin-bottom: 10px;}
 
@@ -65,3 +65,4 @@ table th{background:#deeaff;line-height: 40px;font-size: 14px;color:#7f87a5;}
 table td{padding: 10px;font-size: 14px;color:#465073;}
 .td_150{width: 150px;text-align: center;}
 .td_150 a{color:#597cff;margin-right:13px;}
+.mar_l10{margin-left: 10px;}

@@ -3,8 +3,8 @@ var competencyCtrls = angular.module('competencyCtrls', []);
 competencyCtrls.controller('domainCtrl', function($scope, $http, $location, myFactory) {
 	$scope.domains = [];
 	$scope.competencys = [];
-	$scope.position == '';
-
+	var p = myFactory.getPosition();
+	$scope.position = p;
 	$scope.loadDomains = function() {
 		$http.get('/getDomains').then(function(response) {
 			$scope.domains = response.data;
@@ -15,10 +15,20 @@ competencyCtrls.controller('domainCtrl', function($scope, $http, $location, myFa
 	$scope.domains = myFactory.getDomains();
 	if (!$scope.domains) {
 		$scope.loadDomains();
+	} else {
+		angular.forEach($scope.domains, function(domain){
+			if(domain.checked){
+				$scope.competencys = domain.competencys;
+				return;
+			}
+		});
 	}
 
 	$scope.checkDomain = function(domain) {
 		domain.checked = !domain.checked;
+		angular.forEach(domain.competencys, function(cometency){
+			cometency.firstChecked = domain.checked;
+		});
 		$scope.competencys = domain.competencys;
 	};
 
@@ -40,9 +50,15 @@ competencyCtrls.controller('classCtrl', function($scope, $http, $location, myFac
 	$scope.checkedCompetencys = myFactory.getCompetencys();
 	if (!$scope.checkedCompetencys) {
 		$scope.checkedCompetencys = {};
+		myFactory.setCompetencys($scope.checkedCompetencys);
 	}
 	$scope.next = function() {
-		var count = Object.getOwnPropertyNames($scope.checkedCompetencys).length;
+		var count = 0;
+		angular.forEach($scope.checkedCompetencys,function(v){
+			if(v.checked && v.firstChecked){
+				count++;
+			}
+		});
 		if(count <= 0){
 			toastr.warning('请选择胜任力！');
 			return;
@@ -61,21 +77,22 @@ competencyCtrls.controller('classCtrl', function($scope, $http, $location, myFac
 		$scope.prev();
 	}
 
-	$scope.classes = {};
-	$http.get('/getCompetenctClasses').then(function(response) {
-		angular.forEach(response.data, function(competencyClass) {
-			$scope.classes[competencyClass.id] = competencyClass;
-		});
-		angular.forEach($scope.domains, function(domain) {
-			if (domain.checked) {
+	$scope.classes = myFactory.getClasses();
+	if(!$scope.classes && $scope.domains){
+		$scope.classes = {};
+		$http.get('/getCompetenctClasses').then(function(response) {
+			angular.forEach(response.data, function(competencyClass) {
+				$scope.classes[competencyClass.id] = competencyClass;
+			});
+			angular.forEach($scope.domains, function(domain) {
 				angular.forEach(domain.competencys, function(competency) {
 					competency.checked = false;
 					$scope.classes[competency.competencyClass.id].competencys.push(competency);
 				});
-			}
+			});
+			myFactory.setClasses($scope.classes);
 		});
-	});
-
+	}
 
 	$scope.check = function(competency) {
 		competency.checked = !competency.checked;
@@ -95,7 +112,7 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
 		$location.url("/class");
 	}
 	$scope.position = myFactory.getPosition();
-
+	
     var mystyle = {
     	headers: true,
     	column: {style:{Font:{Bold:'1',Size:'18'}},Height:30},
@@ -125,23 +142,25 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
 	
 	$scope.delete = function(id){
 		$scope.competencys[id].checked = false;
-		delete $scope.competencys[id];
+		//delete $scope.competencys[id];
 	};
 	
 	$scope.export = function() {
 		var exportData = [];
 		angular.forEach($scope.competencys, function(competency) {
-			exportData.push({
-				'name': competency.name,
-				'definition': competency.definition,
-				'description': competency.description
-			});
+			if(competency.checked && competency.firstChecked){
+				exportData.push({
+					'name': competency.name,
+					'definition': competency.definition,
+					'description': competency.description
+				});
+			}
 		});
 		if(exportData.length == 0){
 			toastr.warning('请选择要导出的胜任力！');
 			return;
 		}
-		alasql.promise('SELECT * INTO XLSXML("' + $scope.position + '",?) FROM ?',[mystyle, exportData]).then(function(data) {
+		alasql.promise('SELECT * INTO XLSXML("' + $scope.position + '--胜任力模型",?) FROM ?',[mystyle, exportData]).then(function(data) {
 			if (data == 1) {
 				toastr.success('数据导出成功！');
 			}
