@@ -16706,7 +16706,7 @@ alasql.into.XLSXML = function(filename, opts, data, columns, cb) {
 		 </ExcelWorkbook> \
 		 <Styles> \
 		  <Style ss:ID="Default" ss:Name="Normal"> \
-		   <Alignment ss:Vertical="Bottom" ss:Horizontal="Center"  ss:WrapText="1"/> \
+		   <Alignment ss:Vertical="Center" ss:Horizontal="Center"  ss:WrapText="1"/> \
 		   <Borders/> \
 		   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="12" ss:Color="#000000"/> \
 		   <Interior/> \

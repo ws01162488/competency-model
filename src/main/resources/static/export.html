@@ -16,7 +16,7 @@
 </div>
 <div class="main">
 	<div class="input">
-		<b>营销总监</b>
+		<b>{{position}}</b>
 	</div>
 	<table class="step_three" cellspacing="0" cellpadding="0">
 		<tr>
@@ -27,11 +27,24 @@
 		</tr>
 		<tr ng-repeat="(id,competency) in competencys">
 			<td class="td_150">{{competency.name}}</td>
-			<td>{{competency.definition}}</td>
-			<td>{{competency.description}}</td>
 			<td>
-				<a href="javascript:" ng-click="modify();">修改</a>
-				<a href="javascript:" ng-click="delete(id);">删除</a>
+				<span editable-textarea="competency.definition" e-name="definition" e-rows="7" e-cols="40" e-form="rowform">{{competency.definition}}</span>
+			</td>
+			<td>
+				<span editable-textarea="competency.description" e-name="description" e-rows="7" e-cols="30" e-form="rowform">{{competency.description}}</span>
+			</td>
+			
+			<td>
+				<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline">
+		        	<button type="button" ng-disabled="rowform.$waiting" class="btn btn-primary">
+		            	保存
+		          	</button>
+		          	<button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+		            	取消
+		          	</button>
+		        </form>
+		        <button type="button" ng-show="!rowform.$visible" ng-click="rowform.$show()" class="btn btn-primary">修改</button>
+		        <button type="button" ng-show="!rowform.$visible" ng-click="delete(id);" class="btn btn-danger">删除</button>
 			</td>
 		</tr>
 	</table>

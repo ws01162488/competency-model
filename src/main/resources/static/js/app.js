@@ -1,5 +1,8 @@
-var app = angular.module('competencyApp', ['ngRoute', 'competencyCtrls']);
+var app = angular.module('competencyApp', ['ngRoute', 'xeditable', 'competencyCtrls']);
 // 存放页面间跳转需要传递的数据
+app.run(function(editableOptions) {
+	editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+});
 app.factory('myFactory', function() {
 	var domains;
 	var competencys;
