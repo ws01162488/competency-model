@@ -25,7 +25,7 @@
 			<th class="td_150">行为描述</th>
 			<th class="td_150">操作</th>
 		</tr>
-		<tr ng-repeat="(id,competency) in competencys" ng-if="competency.checked && competency.firstChecked">
+		<tr ng-repeat="competency in competencys" ng-if="competency.checked && competency.firstChecked">
 			<td class="td_150">{{competency.name}}</td>
 			<td>
 				<span editable-textarea="competency.definition" e-name="definition" e-rows="7" e-cols="40" e-form="rowform">{{competency.definition}}</span>
@@ -43,7 +43,7 @@
 		          	</button>
 		        </form>
 		        <button type="button" ng-show="!rowform.$visible" ng-click="rowform.$show()" class="btn btn-primary">修改</button>
-		        <button type="button" ng-show="!rowform.$visible" ng-click="delete(id);" class="btn btn-danger mar_l10">删除</button>
+		        <button type="button" ng-show="!rowform.$visible" ng-click="delete(competency.id);" class="btn btn-danger mar_l10">删除</button>
 			</td>
 		</tr>
 	</table>

@@ -2,7 +2,7 @@ var competencyCtrls = angular.module('competencyCtrls', []);
 // 第一步 选择领域
 competencyCtrls.controller('domainCtrl', function($scope, $http, $location, myFactory) {
 	$scope.domains = [];
-	$scope.competencys = [];
+	$scope.competencys = {};
 	var p = myFactory.getPosition();
 	$scope.position = p;
 	$scope.loadDomains = function() {
@@ -18,23 +18,49 @@ competencyCtrls.controller('domainCtrl', function($scope, $http, $location, myFa
 	} else {
 		angular.forEach($scope.domains, function(domain){
 			if(domain.checked){
-				$scope.competencys = domain.competencys;
-				return;
+				//$scope.competencys = domain.competencys;
+				angular.forEach(domain.competencys, function(competency){
+					var temp = $scope.competencys[competency.id];
+					if(!temp){
+						temp = {count:0,entity:competency};
+						$scope.competencys[competency.id] = temp;
+					}
+					temp.count = temp.count + 1;
+				});
 			}
 		});
 	}
 
 	$scope.checkDomain = function(domain) {
 		domain.checked = !domain.checked;
-		angular.forEach(domain.competencys, function(cometency){
-			cometency.firstChecked = domain.checked;
+		angular.forEach(domain.competencys, function(competency){
+			var temp = $scope.competencys[competency.id];
+			if(!temp){
+				temp = {count:0,entity:competency};
+				$scope.competencys[competency.id] = temp;
+			}
+			if(domain.checked){
+				competency.firstChecked = true;
+				temp.count = temp.count + 1;
+			} else {
+				temp.count = temp.count - 1;
+				if(temp.count == 0){
+					competency.firstChecked = false;
+					delete $scope.competencys[competency.id];
+				}
+			}
+			
 		});
-		$scope.competencys = domain.competencys;
+		
 	};
 
 	$scope.next = function() {
 		if(!$scope.position || $scope.position == ''){
 			toastr.warning('请输入职位！');
+			return;
+		}
+		if(Object.getOwnPropertyNames($scope.competencys).length <= 0){
+			toastr.warning('请选择职位关键贡献领域！');
 			return;
 		}
 		myFactory.setPosition($scope.position);
@@ -49,16 +75,11 @@ competencyCtrls.controller('classCtrl', function($scope, $http, $location, myFac
 
 	$scope.checkedCompetencys = myFactory.getCompetencys();
 	if (!$scope.checkedCompetencys) {
-		$scope.checkedCompetencys = {};
+		$scope.checkedCompetencys = [];
 		myFactory.setCompetencys($scope.checkedCompetencys);
 	}
 	$scope.next = function() {
-		var count = 0;
-		angular.forEach($scope.checkedCompetencys,function(v){
-			if(v.checked && v.firstChecked){
-				count++;
-			}
-		});
+		var count = $scope.checkedCompetencys.length;
 		if(count <= 0){
 			toastr.warning('请选择胜任力！');
 			return;
@@ -95,13 +116,23 @@ competencyCtrls.controller('classCtrl', function($scope, $http, $location, myFac
 	}
 
 	$scope.check = function(competency) {
-		competency.checked = !competency.checked;
-		if (competency.checked) {
-			$scope.checkedCompetencys[competency.id] = competency;
-		} else {
-			delete $scope.checkedCompetencys[competency.id];
+		for(var i=0;i<$scope.checkedCompetencys.length;i++){
+			if($scope.checkedCompetencys[i].id == competency.id){
+				toastr.warning("该胜任力已选择！");
+				return;
+			}
 		}
-
+		competency.checked = true;
+		$scope.checkedCompetencys.push(competency);
+	};
+	
+	$scope.checkOut = function(competency) {
+		competency.checked = false;
+		for(var i=0;i<$scope.checkedCompetencys.length;i++){
+			if($scope.checkedCompetencys[i].id == competency.id){
+				$scope.checkedCompetencys.splice(i,1);
+			}
+		}
 	};
 
 });
@@ -141,7 +172,13 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
 	}
 	
 	$scope.delete = function(id){
-		$scope.competencys[id].checked = false;
+		for(var i=0;i<$scope.competencys.length;i++){
+			if($scope.competencys[i].id == id){
+				$scope.competencys.splice(i,1);
+				break;
+			}
+		}
+		//$scope.competencys[id].checked = false;
 	};
 	
 	$scope.export = function() {
