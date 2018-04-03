@@ -40,6 +40,13 @@ app.factory('myFactory', function() {
 	var getClasses = function() {
 		return classes;
 	};
+	
+	var reset = function() {
+		domains = undefined;
+		competencys = undefined;
+		position = undefined;
+		classes = undefined;
+	};
 
 	return {
 		setDomains : setDomains,
@@ -49,7 +56,8 @@ app.factory('myFactory', function() {
 		setClasses : setClasses,
 		getClasses : getClasses,
 		setPosition : setPosition,
-		getPosition : getPosition
+		getPosition : getPosition,
+		reset : reset
 	}
 });
 

@@ -31,14 +31,14 @@ table,div,ul,li,ol,b,input,p{border:0;list-style: none;padding: 0;margin:0;}
 
 .navbar{}
 .navbar li {margin:10px 7px 0 0;display:inline-block;width:100px;height: 60px;}
-.navbar a {display: table-cell;vertical-align: middle;text-align: center;width:100px;height:60px;border-radius:3px;color:#737c9e;background:#e6edfd;font:bold 14px/1 Arial, Helvetica, sans-serif;text-decoration:none;}
+.navbar a {display: table-cell;vertical-align: middle;text-align: center;width:100px;height:60px;border-radius:3px;color:#737c9e;background:#e6edfd;font:14px/1 Arial, Helvetica, sans-serif;text-decoration:none;}
 .navbar a:hover{color:#fff;background:#5a7dff;}
 .navbar_checked{background:url(images/tab_bg.png) no-repeat !important;color:#737c9e !important;}
 .navbar li:nth-child(5n+5){margin-right:0;}
 
 .step_left{display:inline-block;width: 910px;margin-top: 20px;}
 .nav_tab{width:100%;display:inline-block;margin-top:10px;}
-.nav_tab b{display:inline-block;}
+.nav_tab b{display:inline-block;margin-right: 4px;}
 .tab_class_1{display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;background: #597cff;padding:30px 20px;color:#fff;font-size: 16px;}
 .tab_class_1 img,.tab_class_2 img,.tab_class_3 img,.tab_class_4 img,.tab_class_5 img,.tab_list img{vertical-align: middle;margin-right:10px;}
 .tab_class_2{background: #38ccb2;display: table-cell;vertical-align: middle;width: 178px;border-radius: 3px;padding:30px 20px;color:#fff;font-size: 16px;}
@@ -66,3 +66,4 @@ table td{padding: 10px;font-size: 14px;color:#465073;}
 .td_150{width: 150px;text-align: center;}
 .td_150 a{color:#597cff;margin-right:13px;}
 .mar_l10{margin-left: 10px;}
+.new_position{text-align: center;margin-top: 20px;}

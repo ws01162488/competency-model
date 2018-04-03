@@ -202,4 +202,9 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
 			}
 		});
 	};
+	
+	$scope.newPosition = function(){
+		myFactory.reset();
+		$location.url("/domain");
+	};
 });
