@@ -10,6 +10,12 @@ import com.xuanwu.competency_model.entity.Domain;
 import com.xuanwu.competency_model.repository.CompetencyClassRepository;
 import com.xuanwu.competency_model.repository.DomainRepository;
 
+/**
+ * @Description 主要service，提供信息查询
+ * @author <a href="mailto:miaojiepu@wxchina.com">Jiepu.Miao</a>
+ * @date 2018年4月3日
+ * @version 1.0.0
+ */
 @Component
 public class Service {
 

@@ -142,7 +142,6 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
 	
 	$scope.delete = function(id){
 		$scope.competencys[id].checked = false;
-		//delete $scope.competencys[id];
 	};
 	
 	$scope.export = function() {

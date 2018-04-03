@@ -10,6 +10,12 @@ import com.xuanwu.competency_model.entity.CompetencyClass;
 import com.xuanwu.competency_model.entity.Domain;
 import com.xuanwu.competency_model.service.Service;
 
+/**
+ * @Description rest接口，提供查询
+ * @author <a href="mailto:miaojiepu@wxchina.com">Jiepu.Miao</a>
+ * @date 2018年4月3日
+ * @version 1.0.0
+ */
 @RestController
 public class RestControllor {
 	
