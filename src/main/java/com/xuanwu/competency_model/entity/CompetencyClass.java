@@ -1,13 +1,15 @@
 package com.xuanwu.competency_model.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,14 +23,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name="competency_class")
+@Table(name = "competency_class")
 public class CompetencyClass {
-	
+
 	@Id
 	@GeneratedValue
 	private long id;
 	private String name;
-	@Transient
-	private List<Competency> competencys = new ArrayList<>();
+	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="class_id")
+	private List<Competency> competencys;
 
 }

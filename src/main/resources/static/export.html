@@ -25,7 +25,7 @@
 			<th class="td_150">行为描述</th>
 			<th class="td_150">操作</th>
 		</tr>
-		<tr ng-repeat="competency in competencys" ng-if="competency.checked && competency.firstChecked">
+		<tr ng-repeat="competency in competencys">
 			<td class="td_150">{{competency.name}}</td>
 			<td>
 				<span editable-textarea="competency.definition" e-name="definition" e-rows="7" e-cols="40" e-form="rowform">{{competency.definition}}</span>

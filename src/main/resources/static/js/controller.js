@@ -2,7 +2,7 @@ var competencyCtrls = angular.module('competencyCtrls', []);
 // 第一步 选择领域
 competencyCtrls.controller('domainCtrl', function($scope, $http, $location, myFactory) {
 	$scope.domains = [];
-	$scope.competencys = {};
+	$scope.competencys = [];
 	var p = myFactory.getPosition();
 	$scope.position = p;
 	$scope.loadDomains = function() {
@@ -15,43 +15,19 @@ competencyCtrls.controller('domainCtrl', function($scope, $http, $location, myFa
 	$scope.domains = myFactory.getDomains();
 	if (!$scope.domains) {
 		$scope.loadDomains();
-	} else {
-		angular.forEach($scope.domains, function(domain){
-			if(domain.checked){
-				//$scope.competencys = domain.competencys;
-				angular.forEach(domain.competencys, function(competency){
-					var temp = $scope.competencys[competency.id];
-					if(!temp){
-						temp = {count:0,entity:competency};
-						$scope.competencys[competency.id] = temp;
-					}
-					temp.count = temp.count + 1;
-				});
-			}
-		});
 	}
 
 	$scope.checkDomain = function(domain) {
 		domain.checked = !domain.checked;
-		angular.forEach(domain.competencys, function(competency){
-			var temp = $scope.competencys[competency.id];
-			if(!temp){
-				temp = {count:0,entity:competency};
-				$scope.competencys[competency.id] = temp;
-			}
-			if(domain.checked){
-				competency.firstChecked = true;
-				temp.count = temp.count + 1;
-			} else {
-				temp.count = temp.count - 1;
-				if(temp.count == 0){
-					competency.firstChecked = false;
-					delete $scope.competencys[competency.id];
-				}
-			}
-			
-		});
+		if(domain.checked){
+			$scope.competencys = domain.competencys;
+		} else {
+			$scope.competencys = [];
+		}
 		
+		angular.forEach(domain.competencys,function(competency){
+			competency.checked = domain.checked;
+		});
 	};
 
 	$scope.next = function() {
@@ -73,11 +49,6 @@ competencyCtrls.controller('classCtrl', function($scope, $http, $location, myFac
 		$location.url("/domain");
 	};
 
-	$scope.checkedCompetencys = myFactory.getCompetencys();
-	if (!$scope.checkedCompetencys) {
-		$scope.checkedCompetencys = [];
-		myFactory.setCompetencys($scope.checkedCompetencys);
-	}
 	$scope.next = function() {
 		var count = $scope.checkedCompetencys.length;
 		if(count <= 0){
@@ -94,40 +65,54 @@ competencyCtrls.controller('classCtrl', function($scope, $http, $location, myFac
 
 	$scope.domains = myFactory.getDomains();
 	$scope.position = myFactory.getPosition();
-	if (!$scope.domains) {
+	if (!$scope.domains || !$scope.position) {
 		$scope.prev();
+	}
+	
+	$scope.checkedCompetencys = myFactory.getCompetencys();
+	if (!$scope.checkedCompetencys && $scope.domains) {
+		$scope.checkedCompetencys = [];
+		var set = new Set();//辅助set
+		angular.forEach($scope.domains,function(domain){
+			if(domain.checked){
+				angular.forEach(domain.competencys,function(competency){
+					if(!set.has(competency.id)){
+						set.add(competency.id);
+						$scope.checkedCompetencys.push(competency);
+					}
+				});
+			}
+		});
+		
+		myFactory.setCompetencys($scope.checkedCompetencys);
 	}
 
 	$scope.classes = myFactory.getClasses();
-	if(!$scope.classes && $scope.domains){
+	if(!$scope.classes){
 		$scope.classes = {};
 		$http.get('/getCompetenctClasses').then(function(response) {
 			angular.forEach(response.data, function(competencyClass) {
 				$scope.classes[competencyClass.id] = competencyClass;
 			});
-			angular.forEach($scope.domains, function(domain) {
-				angular.forEach(domain.competencys, function(competency) {
-					competency.checked = false;
-					$scope.classes[competency.competencyClass.id].competencys.push(competency);
-				});
-			});
-			myFactory.setClasses($scope.classes);
 		});
 	}
 
 	$scope.check = function(competency) {
-		for(var i=0;i<$scope.checkedCompetencys.length;i++){
+		var checkedCount = $scope.checkedCompetencys.length;
+		if(checkedCount >= 9){
+			toastr.warning('最多选出9项胜任力！');
+			return;
+		}
+		for(var i=0;i<checkedCount;i++){
 			if($scope.checkedCompetencys[i].id == competency.id){
 				toastr.warning("该胜任力已选择！");
 				return;
 			}
 		}
-		competency.checked = true;
 		$scope.checkedCompetencys.push(competency);
 	};
 	
 	$scope.checkOut = function(competency) {
-		competency.checked = false;
 		for(var i=0;i<$scope.checkedCompetencys.length;i++){
 			if($scope.checkedCompetencys[i].id == competency.id){
 				$scope.checkedCompetencys.splice(i,1);
@@ -146,7 +131,8 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
 	
     var mystyle = {
     	headers: true,
-    	column: {style:{Font:{Bold:'1',Size:'18'}},Height:30},
+    	caption: {title:'职位名称：' + $scope.position, style:'font-size: 20px;'},
+    	column: {style:'font-size:18px'},
     	columns: [{
     			columnid: 'name',
     			title: '胜任力'
@@ -165,7 +151,6 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
     		}
     	]
     };
-
 	$scope.competencys = myFactory.getCompetencys();
 	if (!$scope.competencys) {
 		$scope.prev();
@@ -178,25 +163,22 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
 				break;
 			}
 		}
-		//$scope.competencys[id].checked = false;
 	};
 	
 	$scope.export = function() {
 		var exportData = [];
 		angular.forEach($scope.competencys, function(competency) {
-			if(competency.checked && competency.firstChecked){
-				exportData.push({
-					'name': competency.name,
-					'definition': competency.definition,
-					'description': competency.description
-				});
-			}
+			exportData.push({
+				'name': competency.name,
+				'definition': competency.definition,
+				'description': competency.description
+			});
 		});
 		if(exportData.length == 0){
 			toastr.warning('请选择要导出的胜任力！');
 			return;
 		}
-		alasql.promise('SELECT * INTO XLSXML("' + $scope.position + '--胜任力模型",?) FROM ?',[mystyle, exportData]).then(function(data) {
+		alasql.promise('SELECT * INTO XLS("' + $scope.position + '--胜任力模型",?) FROM ?',[mystyle, exportData]).then(function(data) {
 			if (data == 1) {
 				toastr.success('数据导出成功！');
 			}
