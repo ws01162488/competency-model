@@ -175,8 +175,6 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
 			});
 		});
 		$http.post('/exportExcel', {title:$scope.position,competencys:exportData}).then(function(data) {
-			debugger;
-			console.log(data);
 			window.location.href = 'download?id='+data.data +'&title=胜任力模型--' + $scope.position;
 		});
 	};

@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.xuanwu.competency_model.common.Constants;
+
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @Description 主要视图转发
  * @author <a href="mailto:miaojiepu@wxchina.com">Jiepu.Miao</a>
@@ -23,7 +27,10 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @version 1.0.0
  */
 @Controller
+@Slf4j
 public class MainControllor {
+
+	private static final String ATTACHMENT = "attachment";
 
 	@RequestMapping("/view/{path}")
 	public String main(@PathVariable("path") String path) {
@@ -34,15 +41,21 @@ public class MainControllor {
 	public ResponseEntity<byte[]> export(@RequestParam(name = "title") String title,
 			@RequestParam(name = "id") String id, HttpServletResponse response, HttpServletRequest request)
 			throws Exception {
-		File file = new File("file/" + id + ".xls");
+		File file = new File(Constants.ROOTFOLDER + File.separator + id);
+		if (!file.exists()) {
+			log.error("file {} not exist!", id);
+			return null;
+		}
 		byte[] body = null;
 		InputStream is = new FileInputStream(file);
 		body = new byte[is.available()];
 		is.read(body);
 		is.close();
 		HttpHeaders headers = new HttpHeaders();
-		String fileName = new String((title + ".xls").getBytes("UTF-8"), "iso-8859-1");// 为了解决中文名称乱码问题
-		headers.setContentDispositionFormData("attachment", fileName);
+		// 为了解决中文名称乱码问题
+		String fileName = new String((title + Constants.EXCELTYPE).getBytes(Constants.DEFAULTCHARSET),
+				Constants.ISO_8859_1);
+		headers.setContentDispositionFormData(ATTACHMENT, fileName);
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		return new ResponseEntity<byte[]>(body, headers, HttpStatus.CREATED);
 	}

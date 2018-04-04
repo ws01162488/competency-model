@@ -23,11 +23,11 @@ public class Competency {
 	@Id
 	@GeneratedValue
 	private long id;
-	@ExcelFieldName(label="胜任力",index=0)
+	@ExcelFieldName(label="胜任力",index=1)
 	private String name;
-	@ExcelFieldName(label="定义",index=1)
+	@ExcelFieldName(label="定义",index=2)
 	private String definition;
-	@ExcelFieldName(label="行为描述",index=2)
+	@ExcelFieldName(label="行为描述",index=3)
 	private String description;
 
 }

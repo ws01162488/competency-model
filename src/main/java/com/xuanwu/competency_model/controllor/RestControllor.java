@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xuanwu.competency_model.common.ExcelExporter;
 import com.xuanwu.competency_model.entity.Competency;
 import com.xuanwu.competency_model.entity.CompetencyClass;
 import com.xuanwu.competency_model.entity.Domain;
 import com.xuanwu.competency_model.entity.ExportDto;
 import com.xuanwu.competency_model.service.Service;
-import com.xuanwu.competency_model.util.ExcelUtil;
 
 /**
  * @Description rest接口，提供查询
@@ -39,7 +39,7 @@ public class RestControllor {
 	
 	@RequestMapping(value = "/exportExcel", method = RequestMethod.POST)
 	public String export(@RequestBody ExportDto dto) throws Exception {
-		ExcelUtil<Competency> util = new ExcelUtil<>();
+		ExcelExporter<Competency> util = new ExcelExporter<>();
 		String fileName = util.exportExcel(dto.getTitle(), dto.getCompetencys());
 		return fileName;
 	}
