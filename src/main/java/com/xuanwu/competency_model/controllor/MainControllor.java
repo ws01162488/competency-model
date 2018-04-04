@@ -57,6 +57,7 @@ public class MainControllor {
 				Constants.ISO_8859_1);
 		headers.setContentDispositionFormData(ATTACHMENT, fileName);
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		file.delete();
 		return new ResponseEntity<byte[]>(body, headers, HttpStatus.CREATED);
 	}
 

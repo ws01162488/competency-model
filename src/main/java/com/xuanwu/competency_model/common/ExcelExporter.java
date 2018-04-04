@@ -27,12 +27,15 @@ import org.apache.poi.ss.util.CellRangeAddress;
 
 import com.xuanwu.competency_model.annotation.ExcelFieldName;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @Description
  * @author <a href="mailto:miaojiepu@wxchina.com">Jiepu.Miao</a>
  * @date 2018年4月4日
  * @version 1.0.0
  */
+@Slf4j
 public class ExcelExporter<T> {
 
 	public String exportExcel(String title, List<T> itemList) {
@@ -45,7 +48,7 @@ public class ExcelExporter<T> {
 		T first = itemList.get(0);
 		Class<?> clazz = first.getClass();
 		Field[] fields = clazz.getDeclaredFields();
-		Map<Integer,String> headers = new TreeMap<>();
+		Map<Integer, String> headers = new TreeMap<>();
 		Map<String, String> headNameMap = new HashMap<>();
 		List<Method> methods = new ArrayList<>();
 		// 根据注解获得导出列的顺序 中文标题等
@@ -92,7 +95,7 @@ public class ExcelExporter<T> {
 		headerStyle.setFont(hssfFont);
 		// 选出具体要到出的列 及method方法
 		int rowNumber = 0;
-		for (Entry<Integer,String> entry:headers.entrySet()) {
+		for (Entry<Integer, String> entry : headers.entrySet()) {
 			String header = entry.getValue();
 			if (header == null) {
 				continue;
@@ -125,18 +128,21 @@ public class ExcelExporter<T> {
 			row.setHeightInPoints(40);
 			int cellNumber = 0;
 			for (Method method : methods) {
+				Object value = null;
 				if (method != null) {
-					Object value;
 					try {
 						value = method.invoke(item, new Object[] {});
 					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						log.error("invoke method {} on class {} error,message: {}", method.getName(), clazz.getName(),
+								e.getMessage());
 						value = "";
 					}
-					value = value == null ? "" : String.valueOf(value);
-					cell = row.createCell(cellNumber++);
-					cell.setCellValue(String.valueOf(value));
-					cell.setCellStyle(cellStyle);
+
 				}
+				value = value == null ? "" : String.valueOf(value);
+				cell = row.createCell(cellNumber++);
+				cell.setCellValue(String.valueOf(value));
+				cell.setCellStyle(cellStyle);
 			}
 		}
 		// 生成文件
@@ -152,12 +158,12 @@ public class ExcelExporter<T> {
 			exportXls.close();
 			return name;
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("write file error:{}", e.getMessage());
 		} finally {
 			try {
 				wb.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.error("close sheet error:{}", e.getMessage());
 			}
 		}
 		return null;
