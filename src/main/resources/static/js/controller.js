@@ -174,14 +174,10 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
 				'description': competency.description
 			});
 		});
-		if(exportData.length == 0){
-			toastr.warning('请选择要导出的胜任力！');
-			return;
-		}
-		alasql.promise('SELECT * INTO XLS("' + $scope.position + '--胜任力模型",?) FROM ?',[mystyle, exportData]).then(function(data) {
-			if (data == 1) {
-				toastr.success('数据导出成功！');
-			}
+		$http.post('/exportExcel', {title:$scope.position,competencys:exportData}).then(function(data) {
+			debugger;
+			console.log(data);
+			window.location.href = 'download?id='+data.data +'&title=胜任力模型--' + $scope.position;
 		});
 	};
 	

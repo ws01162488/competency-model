@@ -3,12 +3,17 @@ package com.xuanwu.competency_model.controllor;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xuanwu.competency_model.entity.Competency;
 import com.xuanwu.competency_model.entity.CompetencyClass;
 import com.xuanwu.competency_model.entity.Domain;
+import com.xuanwu.competency_model.entity.ExportDto;
 import com.xuanwu.competency_model.service.Service;
+import com.xuanwu.competency_model.util.ExcelUtil;
 
 /**
  * @Description rest接口，提供查询
@@ -30,5 +35,12 @@ public class RestControllor {
 	@RequestMapping("getCompetenctClasses")
 	public List<CompetencyClass> getCompetenctClasses(){
 		return service.findAllCompetencyClasses();
+	}
+	
+	@RequestMapping(value = "/exportExcel", method = RequestMethod.POST)
+	public String export(@RequestBody ExportDto dto) throws Exception {
+		ExcelUtil<Competency> util = new ExcelUtil<>();
+		String fileName = util.exportExcel(dto.getTitle(), dto.getCompetencys());
+		return fileName;
 	}
 }
