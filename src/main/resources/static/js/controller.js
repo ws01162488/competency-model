@@ -4,6 +4,7 @@ competencyCtrls.controller('domainCtrl', function($scope, $http, $location, myFa
 	$scope.domains = [];
 	$scope.competencys = [];
 	var p = myFactory.getPosition();
+	myFactory.setCompetencys(undefined);
 	$scope.position = p;
 	$scope.loadDomains = function() {
 		$http.get('/getDomains').then(function(response) {
@@ -15,6 +16,13 @@ competencyCtrls.controller('domainCtrl', function($scope, $http, $location, myFa
 	$scope.domains = myFactory.getDomains();
 	if (!$scope.domains) {
 		$scope.loadDomains();
+	} else {
+		angular.forEach($scope.domains,function(domain){
+			if(domain.checked){
+				$scope.competencys = domain.competencys;
+				return;
+			}
+		});
 	}
 
 	$scope.checkDomain = function(domain) {
@@ -35,7 +43,15 @@ competencyCtrls.controller('domainCtrl', function($scope, $http, $location, myFa
 			toastr.warning('请输入职位！');
 			return;
 		}
-		if(Object.getOwnPropertyNames($scope.competencys).length <= 0){
+		var checked = false;
+		angular.forEach($scope.domains,function(domain){
+			if(domain.checked){
+				checked = true;
+				return;
+			}
+		});
+		
+		if(!checked){
 			toastr.warning('请选择职位关键贡献领域！');
 			return;
 		}
