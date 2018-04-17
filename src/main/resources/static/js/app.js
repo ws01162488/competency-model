@@ -68,9 +68,12 @@ app.config(function ($routeProvider) {
     }).when('/class', {
         templateUrl: '/view/class',
         controller: 'classCtrl'
-    }).when('/export', {
-        templateUrl: '/view/export',
-        controller: 'exportCtrl'
+    }).when('/warrper', {
+        templateUrl: '/view/warrper',
+        controller: 'warrperCtrl'
+    }).when('/evaluation', {
+        templateUrl: '/view/evaluation',
+        controller: 'evaluationCtrl'
     }).otherwise({
         redirectTo: '/domain'
     })

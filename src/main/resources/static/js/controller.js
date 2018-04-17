@@ -76,7 +76,7 @@ competencyCtrls.controller('classCtrl', function($scope, $http, $location, myFac
 			return;
 		}
 		myFactory.setCompetencys($scope.checkedCompetencys);
-		$location.url("/export");
+		$location.url("/warrper");
 	};
 
 	$scope.domains = myFactory.getDomains();
@@ -137,36 +137,19 @@ competencyCtrls.controller('classCtrl', function($scope, $http, $location, myFac
 	};
 
 });
-// 第三步 导出
-competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFactory) {
+//第三步 包装
+competencyCtrls.controller('warrperCtrl', function($scope, $http, $location, myFactory) {
 	$scope.prev = function() {
 		myFactory.setCompetencys($scope.competencys);
 		$location.url("/class");
 	}
+	
+	$scope.next = function() {
+		myFactory.setCompetencys($scope.competencys);
+		$location.url("/evaluation");
+	}
 	$scope.position = myFactory.getPosition();
 	
-    var mystyle = {
-    	headers: true,
-    	caption: {title:'职位名称：' + $scope.position, style:'font-size: 20px;'},
-    	column: {style:'font-size:18px'},
-    	columns: [{
-    			columnid: 'name',
-    			title: '胜任力'
-    		},
-    		{
-    			columnid: 'definition',
-    			title: '定义',
-    			width: 500,
-    			height: 300
-    		},
-    		{
-    			columnid: 'description',
-    			title: '行为描述',
-    			width: 500,
-    			height: 300
-    		}
-    	]
-    };
 	$scope.competencys = myFactory.getCompetencys();
 	if (!$scope.competencys) {
 		$scope.prev();
@@ -190,7 +173,39 @@ competencyCtrls.controller('exportCtrl', function($scope, $http, $location, myFa
 				'description': competency.description
 			});
 		});
-		$http.post('/exportExcel', {title:$scope.position,competencys:exportData}).then(function(data) {
+		$http.post('/exportWarrper', {title:$scope.position,competencys:exportData}).then(function(data) {
+			window.location.href = 'download?id='+data.data +'&title=胜任力模型--' + $scope.position;
+		});
+	};
+	
+	$scope.newPosition = function(){
+		myFactory.reset();
+		$location.url("/domain");
+	};
+});
+//第四步 评价
+competencyCtrls.controller('evaluationCtrl', function($scope, $http, $location, myFactory) {
+	$scope.prev = function() {
+		myFactory.setCompetencys($scope.competencys);
+		$location.url("/warrper");
+	}
+	$scope.position = myFactory.getPosition();
+	
+	$scope.competencys = myFactory.getCompetencys();
+	if (!$scope.competencys) {
+		$scope.prev();
+	}
+	
+	$scope.export = function() {
+		var exportData = [];
+		angular.forEach($scope.competencys, function(competency) {
+			exportData.push({
+				'name': competency.name,
+				'definition': competency.definition,
+				'description': competency.description
+			});
+		});
+		$http.post('/exportEvaluation', {title:$scope.position,competencys:exportData}).then(function(data) {
 			window.location.href = 'download?id='+data.data +'&title=胜任力模型--' + $scope.position;
 		});
 	};

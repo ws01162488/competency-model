@@ -1,0 +1,51 @@
+<div class="banner">
+	<div class="step">
+		<i><img src="css/images/icon_yd_on.png"></i>
+		<p class="step_line step_two"></p>
+		<i><img src="css/images/icon_yd_on.png"></i>
+		<p class="step_line step_two"></p>
+		<b><img src="css/images/icon_yd_on.png"></b>
+	</div>
+	<div class="step_font">
+		<ul>
+			<li class="step_color">识别职位关键贡献领域</li>
+			<li class="step_color">胜任力分析</li>
+			<li class="step_color">胜任力模型包装</li>
+		</ul>
+	</div>
+</div>
+<div class="main">
+	<div class="input">
+		<b>{{position}}</b>
+	</div>
+	<table class="step_three" cellspacing="0" cellpadding="0">
+		<tr>
+			<th class="td_150">胜任力</th>
+			<th class="td_150">评价标准</th>
+			<th class="td_150">面试问题</th>
+			<th class="td_150">作答记录</th>
+			<th class="td_150">评分(1-5分)</th>
+		</tr>
+		<tr ng-repeat="competency in competencys">
+			<td class="td_150">{{competency.name}}</td>
+			<td>
+				{{competency.evaluationCriterion}}
+			</td>
+			<td>
+				{{competency.question}}
+			</td>
+			<td>
+				
+			</td>
+			<td>
+				
+			</td>
+			
+		</tr>
+	</table>
+	<div class="button">
+		<input class="back" type="button" value="上一步" ng-click="prev();" /> 
+		<input type="button" value="导&nbsp;出" ng-click="export();" />
+	</div>
+	<div class="new_position"><a href="javascript:" ng-click="newPosition();">创建一个新职位</a></div>
+</div>

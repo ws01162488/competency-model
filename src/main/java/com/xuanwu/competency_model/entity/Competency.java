@@ -29,5 +29,7 @@ public class Competency {
 	private String definition;
 	@ExcelFieldName(label="行为描述",index=3)
 	private String description;
+	private String evaluationCriterion;
+	private String question;
 
 }

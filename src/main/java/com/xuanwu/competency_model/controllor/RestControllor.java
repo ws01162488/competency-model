@@ -37,8 +37,15 @@ public class RestControllor {
 		return service.findAllCompetencyClasses();
 	}
 	
-	@RequestMapping(value = "/exportExcel", method = RequestMethod.POST)
-	public String export(@RequestBody ExportDto dto) throws Exception {
+	@RequestMapping(value = "/exportWarrper", method = RequestMethod.POST)
+	public String exportWarrper(@RequestBody ExportDto dto) throws Exception {
+		ExcelExporter<Competency> util = new ExcelExporter<>();
+		String fileName = util.exportExcel(dto.getTitle(), dto.getCompetencys());
+		return fileName;
+	}
+	
+	@RequestMapping(value = "/exportEvaluation", method = RequestMethod.POST)
+	public String exportEvaluation(@RequestBody ExportDto dto) throws Exception {
 		ExcelExporter<Competency> util = new ExcelExporter<>();
 		String fileName = util.exportExcel(dto.getTitle(), dto.getCompetencys());
 		return fileName;
