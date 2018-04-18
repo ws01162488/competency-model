@@ -14,6 +14,16 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface ExcelFieldName {
+	/**
+	 * 列的中文名称
+	 */
 	String label() default "";
-	int index();
+	/**
+	 * 排序
+	 */
+	int index() default 1;
+	/**
+	 * 列长度
+	 */
+	int width() default 5000;
 }

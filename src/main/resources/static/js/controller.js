@@ -201,8 +201,8 @@ competencyCtrls.controller('evaluationCtrl', function($scope, $http, $location, 
 		angular.forEach($scope.competencys, function(competency) {
 			exportData.push({
 				'name': competency.name,
-				'definition': competency.definition,
-				'description': competency.description
+				'evaluationCriterion': competency.evaluationCriterion,
+				'question': competency.question
 			});
 		});
 		$http.post('/exportEvaluation', {title:$scope.position,competencys:exportData}).then(function(data) {

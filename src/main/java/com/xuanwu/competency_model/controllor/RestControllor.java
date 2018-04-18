@@ -16,38 +16,39 @@ import com.xuanwu.competency_model.entity.ExportDto;
 import com.xuanwu.competency_model.service.Service;
 
 /**
- * @Description rest接口，提供查询
+ * @Description rest接口，提供查询导出等
  * @author <a href="mailto:miaojiepu@wxchina.com">Jiepu.Miao</a>
  * @date 2018年4月3日
  * @version 1.0.0
  */
 @RestController
 public class RestControllor {
-	
+
 	@Autowired
 	private Service service;
-	
+
 	@RequestMapping("getDomains")
-	public List<Domain> getDomains(){
+	public List<Domain> getDomains() {
 		return service.findAllDomain();
 	}
-	
+
 	@RequestMapping("getCompetenctClasses")
-	public List<CompetencyClass> getCompetenctClasses(){
+	public List<CompetencyClass> getCompetenctClasses() {
 		return service.findAllCompetencyClasses();
 	}
-	
+
 	@RequestMapping(value = "/exportWarrper", method = RequestMethod.POST)
 	public String exportWarrper(@RequestBody ExportDto dto) throws Exception {
 		ExcelExporter<Competency> util = new ExcelExporter<>();
-		String fileName = util.exportExcel(dto.getTitle(), dto.getCompetencys());
+		String fileName = util.exportExcel("职位名称：" + dto.getTitle(), dto.getCompetencys(), "evaluationCriterion",
+				"question", "answerRecord", "score");
 		return fileName;
 	}
-	
+
 	@RequestMapping(value = "/exportEvaluation", method = RequestMethod.POST)
 	public String exportEvaluation(@RequestBody ExportDto dto) throws Exception {
 		ExcelExporter<Competency> util = new ExcelExporter<>();
-		String fileName = util.exportExcel(dto.getTitle(), dto.getCompetencys());
+		String fileName = util.exportExcel("职位名称：" + dto.getTitle(), dto.getCompetencys(), "definition", "description");
 		return fileName;
 	}
 }

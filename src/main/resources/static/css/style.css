@@ -6,10 +6,10 @@ table,div,ul,li,ol,b,input,p{border:0;list-style: none;padding: 0;margin:0;}
 .step{width: 90%;display: inline-block;margin-top:90px;}
 .step i{display: inline-block;}
 .step i img,.step b img{position: relative;top:1px;}
-.step_line{border-top:solid 2px #7d98ff;height:2px;width:400px;display: inline-block;}
+.step_line{border-top:solid 2px #7d98ff;height:2px;width:260px;display: inline-block;}
 .step_two{border-top:solid 2px #ffa200;}
 .step_font{display: inline-block;width:75%;}
-.step_font li{display: inline-block;width:33%;color:#89a2ff;font-size: 14px;}
+.step_font li{display: inline-block;width:20%;color:#89a2ff;font-size: 14px;}
 .step_font .step_color{color:#fff;}
 
 .input{font-size: 14px;color:#465073;}

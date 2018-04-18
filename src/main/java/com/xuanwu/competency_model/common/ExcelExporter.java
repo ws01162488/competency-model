@@ -8,9 +8,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
@@ -21,6 +23,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -38,54 +41,70 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExcelExporter<T> {
 
-	public String exportExcel(String title, List<T> itemList) {
+	/**
+	 * @param title
+	 *            文档标题,对应第一行，会做跨列。不需要时请传null
+	 * @param itemList
+	 *            要导出的数据集
+	 * @param excludeFiledString
+	 *            已有注解标注，但本次导出又不需要的字段
+	 * @return 最终生成的文件名
+	 */
+	public String exportExcel(String title, List<T> itemList, String... excludeFiledString) {
+		Set<String> excludeFileds = new HashSet<>();
+		for (String field : excludeFiledString) {
+			excludeFileds.add(field);
+		}
+
 		HSSFWorkbook wb = new HSSFWorkbook();
-		HSSFSheet sheet = wb.createSheet(title);
-		sheet.setColumnWidth(0, 5000);
-		sheet.setColumnWidth(1, 20000);
-		sheet.setColumnWidth(2, 20000);
+		HSSFSheet sheet = wb.createSheet();
 
 		T first = itemList.get(0);
 		Class<?> clazz = first.getClass();
 		Field[] fields = clazz.getDeclaredFields();
-		Map<Integer, String> headers = new TreeMap<>();
-		Map<String, String> headNameMap = new HashMap<>();
+		Map<Integer, ExcelFieldName> headers = new TreeMap<>();
+		Map<Integer, String> headNameMap = new HashMap<>();
 		List<Method> methods = new ArrayList<>();
 		// 根据注解获得导出列的顺序 中文标题等
 		for (Field field : fields) {
 			ExcelFieldName excelFieldName = field.getAnnotation(ExcelFieldName.class);
-			if (excelFieldName != null) {
+			if (excelFieldName != null && !excludeFileds.contains(field.getName())) {
 				int index = excelFieldName.index();
 				String fieldName = field.getName();
 				while (headers.get(index) != null) {
 					index++;
 				}
 
-				headers.put(index, fieldName);
+				headers.put(index, excelFieldName);
 				String label = excelFieldName.label();
 				if (StringUtils.isBlank(label)) {
 					label = fieldName;
 				}
-				headNameMap.put(fieldName, label);
+				headNameMap.put(index, fieldName);
 			}
 		}
 		HSSFCell cell;
-		// 标题行
-		HSSFRow caption = sheet.createRow(0);
-		HSSFCellStyle captionStyle = wb.createCellStyle();
-		captionStyle.setAlignment(HorizontalAlignment.CENTER);
-		captionStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-		HSSFFont captionStyleFont = wb.createFont();
-		captionStyleFont.setBold(true);
-		captionStyleFont.setFontHeightInPoints((short) 24);
-		captionStyle.setFont(captionStyleFont);
-		cell = caption.createCell(0);
-		cell.setCellValue("职位名称:" + title);
-		cell.setCellStyle(captionStyle);
-		CellRangeAddress cra = new CellRangeAddress(0, 0, 0, 2); // 起始行, 终止行, 起始列, 终止列
-		sheet.addMergedRegion(cra);
+		int rowNumber = 0;
+		if (title != null) {
+			// 标题行
+			HSSFRow caption = sheet.createRow(rowNumber++);
+			HSSFCellStyle captionStyle = wb.createCellStyle();
+			captionStyle.setAlignment(HorizontalAlignment.CENTER);
+			captionStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+			HSSFFont captionStyleFont = wb.createFont();
+			captionStyleFont.setBold(true);
+			captionStyleFont.setFontHeightInPoints((short) 24);
+			captionStyle.setFont(captionStyleFont);
+			cell = caption.createCell(0);
+			cell.setCellType(CellType.STRING);
+			cell.setCellValue(title);
+			cell.setCellStyle(captionStyle);
+			CellRangeAddress cra = new CellRangeAddress(0, 0, 0, headers.size() - 1); // 起始行, 终止行, 起始列, 终止列
+			sheet.addMergedRegion(cra);
+		}
+
 		// head行
-		HSSFRow row = sheet.createRow(1);
+		HSSFRow row = sheet.createRow(rowNumber++);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setAlignment(HorizontalAlignment.CENTER);
 		headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -94,20 +113,22 @@ public class ExcelExporter<T> {
 		hssfFont.setFontHeightInPoints((short) 24);
 		headerStyle.setFont(hssfFont);
 		// 选出具体要到出的列 及method方法
-		int rowNumber = 0;
-		for (Entry<Integer, String> entry : headers.entrySet()) {
-			String header = entry.getValue();
+		int columnNumber = 0;
+		for (Entry<Integer, ExcelFieldName> entry : headers.entrySet()) {
+			String header = entry.getValue().label();
 			if (header == null) {
 				continue;
 			}
 
-			cell = row.createCell(rowNumber++);
-			cell.setCellValue(headNameMap.get(header));
+			sheet.setColumnWidth(columnNumber, entry.getValue().width());
+			cell = row.createCell(columnNumber++);
+			cell.setCellValue(header);
 			cell.setCellStyle(headerStyle);
+			String filedName = headNameMap.get(entry.getKey());
 
 			Method method;
 			try {
-				method = clazz.getMethod("get" + header.substring(0, 1).toUpperCase() + header.substring(1));
+				method = clazz.getMethod("get" + filedName.substring(0, 1).toUpperCase() + filedName.substring(1));
 			} catch (NoSuchMethodException | SecurityException e) {
 				method = null;
 			}
@@ -122,7 +143,6 @@ public class ExcelExporter<T> {
 		cellStyle.setFont(cellFont);
 		cellStyle.setWrapText(true);
 		// 具体数据
-		rowNumber = 2;
 		for (T item : itemList) {
 			row = sheet.createRow(rowNumber++);
 			row.setHeightInPoints(40);
