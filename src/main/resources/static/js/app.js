@@ -78,3 +78,20 @@ app.config(function ($routeProvider) {
         redirectTo: '/domain'
     })
 });
+
+var replaceAll = function(str, token, newToken) {
+	var i = -1;
+	if (typeof(token) === "string") {
+		while ((i = str.indexOf(token, i >= 0 ? i + newToken.length : 0)) !== -1) {
+			str = str.substring(0, i).concat(newToken).concat(str.substring(i + token.length));
+		}
+	}
+	return str;
+};
+
+app.filter('nl2br', ['$sce', function ($sce) {
+    return function (text) {
+    	console.log(replaceAll(text, '\\n', '<br/>'));
+        return text ? $sce.trustAsHtml(replaceAll(text, '\\n', '<br/>')) : '';
+    };
+}]);

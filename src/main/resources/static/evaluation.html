@@ -26,24 +26,19 @@
 			<th class="td_150">胜任力</th>
 			<th class="td_150">评价标准</th>
 			<th class="td_150">面试问题</th>
-			<th class="td_150">作答记录</th>
-			<th class="td_150">评分(1-5分)</th>
+			<th class="td_150">作答记录及评分</th>
 		</tr>
 		<tr ng-repeat="competency in competencys">
 			<td class="td_150">{{competency.name}}</td>
 			<td>
-				{{competency.evaluationCriterion}}
+				<span ng-bind-html="competency.evaluationCriterion | nl2br"></span>
 			</td>
 			<td>
-				{{competency.question}}
-			</td>
-			<td>
-				
+				<span ng-bind-html="competency.question | nl2br"></span>
 			</td>
 			<td>
 				
 			</td>
-			
 		</tr>
 	</table>
 	<div class="button">

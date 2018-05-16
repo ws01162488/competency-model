@@ -135,17 +135,24 @@ public class ExcelExporter<T> {
 			methods.add(method);
 		}
 		// 数据行 style
-		HSSFCellStyle cellStyle = wb.createCellStyle();
-		cellStyle.setAlignment(HorizontalAlignment.CENTER);
-		cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		HSSFCellStyle cellStyleTitle = wb.createCellStyle();
+		cellStyleTitle.setAlignment(HorizontalAlignment.CENTER);
+		cellStyleTitle.setVerticalAlignment(VerticalAlignment.CENTER);
 		HSSFFont cellFont = wb.createFont();
 		cellFont.setFontHeightInPoints((short) 12);
-		cellStyle.setFont(cellFont);
-		cellStyle.setWrapText(true);
+		cellStyleTitle.setFont(cellFont);
+		cellStyleTitle.setWrapText(true);
+		
+		
+		HSSFCellStyle cellStyleText = wb.createCellStyle();
+		cellStyleText.setAlignment(HorizontalAlignment.LEFT);
+		cellStyleText.setVerticalAlignment(VerticalAlignment.CENTER);
+		cellStyleText.setFont(cellFont);
+		cellStyleText.setWrapText(true);
 		// 具体数据
 		for (T item : itemList) {
 			row = sheet.createRow(rowNumber++);
-			row.setHeightInPoints(40);
+			row.setHeightInPoints(100);
 			int cellNumber = 0;
 			for (Method method : methods) {
 				Object value = null;
@@ -159,10 +166,10 @@ public class ExcelExporter<T> {
 					}
 
 				}
-				value = value == null ? "" : String.valueOf(value);
+				value = value == null ? "" : String.valueOf(value).replaceAll("\\\\n", "\r\n");
 				cell = row.createCell(cellNumber++);
 				cell.setCellValue(String.valueOf(value));
-				cell.setCellStyle(cellStyle);
+				cell.setCellStyle(rowNumber == 1 ? cellStyleTitle:cellStyleText);
 			}
 		}
 		// 生成文件
